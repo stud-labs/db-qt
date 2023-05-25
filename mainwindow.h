@@ -20,6 +20,8 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_buttonBox_destroyed();
+
 private:
     Ui::MainWindow *ui;
 public:

@@ -40,3 +40,10 @@ void MainWindow::on_buttonBox_accepted()
     accept();
 }
 
+
+void MainWindow::on_buttonBox_destroyed()
+{
+    ssh.kill();
+    db.close();
+}
+

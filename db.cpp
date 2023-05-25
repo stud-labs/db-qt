@@ -9,6 +9,9 @@ QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
 QProcess ssh;
 
 size_t portNo = 5432;
+QString host = "localhost";
+// QString sshHost = "kuber.isclan.ru";
+QString sshHost = "172.25.4.203"; // "172.25.4.203" (local for NRTU)
 
 /*
  *     Settings settings; const Settings::SSH &ssh{settings.loadSSH()}; ssh_key key;
@@ -44,10 +47,10 @@ size_t portNo = 5432;
 bool SetupDatabaseConnection(QSqlDatabase db) {
   QString psw = std::getenv("DBPASSWD");
   ssh.start("ssh",
-            {"-L", "5432:localhost:5432",
-             "eugeneai@kuber.isclan.ru"});
-
-  db.setHostName("localhost");
+            {QString("-L"), QString("5432:%1:5432").arg(host),
+             QString("eugeneai@%1").arg(sshHost)});
+  ssh.waitForStarted();
+  db.setHostName(host);
   db.setDatabaseName("test");
   db.setUserName("dbstudent");
   db.setPassword(psw);
