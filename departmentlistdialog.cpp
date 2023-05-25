@@ -14,6 +14,6 @@ DepartmentListDialog::~DepartmentListDialog()
     delete ui;
 }
 
-DepartmentListDialog::setupResult() {
+void DepartmentListDialog::setupResult() {
 
 }

@@ -22,5 +22,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+public:
+    bool dbOk = false;
 };
 #endif // MAINWINDOW_H

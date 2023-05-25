@@ -19,7 +19,7 @@ private:
     Ui::DepartmentListDialog *ui;
 
 protected:
-    virtual setupResult();
+    virtual void setupResult();
 };
 
 #endif // DEPARTMENTLISTDIALOG_H

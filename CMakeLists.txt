@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Sql)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Sql Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Sql Core)
 
 set(TS_FILES dbclient_ru_RU.ts)
 
@@ -23,7 +23,7 @@ set(PROJECT_SOURCES
         departmentlistdialog.cpp
         departmentlistdialog.ui
         db.cpp
-        db.h
+        db.hpp
         ${TS_FILES}
 )
 
@@ -54,7 +54,11 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(dbclient PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(dbclient PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Sql
+    Qt${QT_VERSION_MAJOR}::Core
+)
 
 set_target_properties(dbclient PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

@@ -2,13 +2,22 @@
 #include "./ui_mainwindow.h"
 #include "./departmentlistdialog.h"
 #include <QMessageBox>
+#include "./db.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    on_pushButton_clicked();
+    dbOk = SetupDatabaseConnection(db);
+    if (! dbOk) {
+      QMessageBox::critical(this,
+                            "Cannot connect to DB",
+                            "Sonething wrong with DB connection, may be password? (DBPASSWD)");
+      reject();
+    } else {
+      on_pushButton_clicked();
+    }
 }
 
 MainWindow::~MainWindow()
