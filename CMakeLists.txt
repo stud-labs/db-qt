@@ -9,7 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Sql Core)
+# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Sql Core)
+set(QT_VERSION_MAJOR 6)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Sql Core)
 
 set(TS_FILES dbclient_ru_RU.ts)
@@ -22,6 +23,8 @@ set(PROJECT_SOURCES
         departmentlistdialog.h
         departmentlistdialog.cpp
         departmentlistdialog.ui
+        qsqlproctablemodel.h
+        qsqlproctablemodel.cpp
         db.cpp
         db.hpp
         ${TS_FILES}

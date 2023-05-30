@@ -2,6 +2,7 @@
 #define DEPARTMENTLISTDIALOG_H
 
 #include <QDialog>
+#include "qsqlproctablemodel.h"
 
 namespace Ui {
 class DepartmentListDialog;
@@ -20,6 +21,7 @@ private:
 
 protected:
     virtual void setupResult();
+    QSqlProcTableModel tableModel;
 };
 
 #endif // DEPARTMENTLISTDIALOG_H
