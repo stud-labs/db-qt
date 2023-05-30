@@ -1,8 +1,11 @@
 #include "./db.hpp"
 #include <QSqlDatabase>
 #include <QProcess>
+#include <QSqlError>
 #include <iostream>
 #include <cstdlib>
+
+#define DIRECTCONNECTION
 
 QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
 
@@ -10,8 +13,8 @@ QProcess ssh;
 
 size_t portNo = 5432;
 QString host = "localhost";
-// QString sshHost = "kuber.isclan.ru";
-QString sshHost = "172.25.4.203"; // "172.25.4.203" (local for NRTU)
+//QString sshHost = "kuber.isclan.ru";
+//QString sshHost = "172.25.4.203"; // "172.25.4.203" (local for NRTU)
 
 /*
  *     Settings settings; const Settings::SSH &ssh{settings.loadSSH()}; ssh_key key;
@@ -46,16 +49,23 @@ QString sshHost = "172.25.4.203"; // "172.25.4.203" (local for NRTU)
 
 bool SetupDatabaseConnection(QSqlDatabase db) {
   QString psw = std::getenv("DBPASSWD");
+  QString serverHost = std::getenv("DBHOST");
+#ifndef DIRECTCONNECTION
   ssh.start("ssh",
-            {QString("-L"), QString("5432:%1:5432").arg(host),
-             QString("eugeneai@%1").arg(sshHost)});
+            {QString("-L"),
+             QString("%1:%2:5432").arg(portNo).arg(host),
+             QString("eugeneai@%1").arg(serverHost)});
   ssh.waitForStarted();
   db.setHostName(host);
+#else
+  db.setHostName(serverHost);
+#endif
   db.setDatabaseName("test");
   db.setUserName("dbstudent");
   db.setPassword(psw);
   db.setPort(portNo);
-  return db.open();
+  bool rc = db.open();
+  return rc;
 }
 
 

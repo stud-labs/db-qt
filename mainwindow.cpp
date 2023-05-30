@@ -3,6 +3,8 @@
 #include "./departmentlistdialog.h"
 #include <QMessageBox>
 #include "./db.hpp"
+#include <QSqlDatabase>
+#include <QSqlError>
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
@@ -11,12 +13,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     dbOk = SetupDatabaseConnection(db);
     if (! dbOk) {
-      QMessageBox::critical(this,
-                            "Cannot connect to DB",
-                            "Sonething wrong with DB connection, may be password? (DBPASSWD)");
-      reject();
+        QSqlError e = db.lastError();
+        QMessageBox::critical(this,
+            "Cannot connect to DB",
+            "Sonething wrong with DB connection, may be password? (DBPASSWD) \n" +
+            e.text()
+                              );
+        reject();
     } else {
-      on_pushButton_clicked();
+        on_pushButton_clicked();
     }
 }
 
@@ -43,7 +48,12 @@ void MainWindow::on_buttonBox_accepted()
 
 void MainWindow::on_buttonBox_destroyed()
 {
-    ssh.kill();
     db.close();
+}
+
+void MainWindow::on_MainWindow_finished(int result)
+{
+    ssh.kill();
+    ssh.waitForFinished();
 }
 

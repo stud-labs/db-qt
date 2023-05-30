@@ -22,6 +22,8 @@ private slots:
 
     void on_buttonBox_destroyed();
 
+    void on_MainWindow_finished(int result);
+
 private:
     Ui::MainWindow *ui;
 public:
